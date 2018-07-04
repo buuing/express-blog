@@ -1,5 +1,5 @@
 exports.showLogin = (req, res) => {
-  res.send('showLogin')
+  res.render('login.html')
 }
 
 exports.login = (req, res) => {
@@ -7,7 +7,7 @@ exports.login = (req, res) => {
 }
 
 exports.showRegister = (req, res) => {
-  res.send('showRegister')
+  res.render('register.html')
 }
 
 exports.register = (req, res) => {

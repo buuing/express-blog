@@ -1,4 +1,11 @@
-> express
+## 项目介绍
+>
+- 使用express框架来构建node项目
+> npm i express
+- 使用art-template模板引擎渲染页面和数据
+> npm i art-template express-art-template
+- 使用bootstrap和jquery渲染css样式布局和DOM操作
+> npm i bootstrap@3.3.7 jquery
 
 ## 目录结构
 
