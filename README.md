@@ -1,3 +1,8 @@
+
+> git clone https://github.com/buuing/express-blog.git
+
+<br>
+
 ## 项目介绍
 
 使用express框架来构建node项目
