@@ -1,13 +1,50 @@
 ## 项目介绍
 
 使用express框架来构建node项目
-> npm i express
+> `npm i express`
+
+```
+// 加载模块
+const express = require('express')
+// 创建服务器实例
+const app = express()
+```
+
+---
 
 使用art-template模板引擎渲染页面和数据
-> npm i art-template express-art-template
+> `npm i art-template express-art-template`
+
+```
+// 配置模板引擎
+app.engine('html', require('express-art-template'))
+```
+
+---
+
+使用router进行路由管理
+```
+// 创建路由实例
+const router = express.Router()
+// 挂载路由容器到app中,使路由生效
+app.use(router)
+```
+
+---
+
+使用body-parser处理表单POST请求
+> `npm i body-parser`
+
+```
+// 配置 body-parser
+app.use(bodyParser.urlencoded({ extended: true }))
+// app.use(bodyParser.json())
+```
+
+---
 
 使用bootstrap和jquery渲染css样式布局和DOM操作
-> npm i bootstrap@3.3.7 jquery
+> `npm i bootstrap@3.3.7 jquery`
 
 <br>
 
@@ -28,7 +65,7 @@
 ## 路由设计
 
 | 请求方法 | 请求路径 | 说明
-| ---- | ---- | ----
+| ------ | -------------------- | ----
 | GET    | /                    | 渲染首页
 | GET    | /login               | 渲染登录页
 | POST   | /login               | 处理登录请求
@@ -113,4 +150,29 @@ CREATE TABLE `topic_comments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
+<br>
+
+## Bug汇总
+
+#### Bug NO.1
+
+- 问题描述：
+
+> 控制器中的`req.body`始终获取不到前端ajax发送过来的数据，页面中console.log打印表单数据有值，但客户端post过来之后，服务端却一直显示undefined
+
+- 解决方案：
+
+> 将挂载路由的代码`app.use(router)`放到所有的配置代码后面 -- 耗时4小时
+
+---
+
+<!-- #### Bug No.2
+
+- 问题描述：
+
+> ...
+
+- 解决方案：
+
+> ... -->
 
