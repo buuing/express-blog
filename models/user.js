@@ -20,12 +20,13 @@ exports.isNickname = (nickname, callback) => {
     if (err) {
       return callback(err, undefined)
     }
-    callback(null, results)
+    callback(null, results[0])
   })
 }
 
 // 保存注册信息
 exports.save = (user, callback) => {
+  user.createdAt = null
   let sql = 'INSERT INTO `users` SET ?'
   query(sql, [user], (err, results) => {
     if (err) {

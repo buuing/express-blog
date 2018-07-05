@@ -55,27 +55,24 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // 加载mysql模块
 const mysql = require('mysql')
 // 创建连接池
-const pool = mysql.createPool({
-  host: '127.0.0.1',
-  user: 'root',
-  password: '1234',
-  database: 'test',
-  // 默认是10个
-  connectionLimit: 10
-})
-// 获取可用的连接
-pool.getConnection((err, connection) => {
-  if (err) { throw err }
-  // 执行sql语句
-  let sql = 'SELECT * FROM `info`'
-  connection.query(sql, (err, results) => {
-    // 查询完毕后,释放回连接池
-    connection.release()
-    // 处理结果
-    if (err) { throw err }
-    console.log(results)
+const pool = mysql.createPool(dbConfig)
+// 封装私有的执行sql方法
+exports.query = (...args) => {
+  const callback = args.pop()
+  // 从连接池中获取连接
+  pool.getConnection((err, connection) => {
+    if (err) {
+      return callback(err, undefined)
+    }
+    // 执行sql语句
+    connection.query(...args, (...results) => {
+      // 释放连接
+      connection.release()
+      // .
+      callback(...results)
+    })
   })
-})
+}
 ```
 
 ---
