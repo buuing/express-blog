@@ -77,6 +77,18 @@ exports.query = (...args) => {
 
 ---
 
+使用MD5进行数据加密
+> npm i blueimp-md5
+
+```
+// 加载MD5模块
+const md5 = require('blueimp-md5')
+// 数据加密
+data.password = md5(data.password)
+```
+
+---
+
 使用bootstrap和jquery渲染css样式布局和DOM操作
 > `npm i bootstrap@3.3.7 jquery`
 

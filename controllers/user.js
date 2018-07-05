@@ -1,6 +1,7 @@
 /* 用户控制器 */
 
 const user = require('../models/user')
+const md5 = require('blueimp-md5')
 
 // 展示登录页面
 exports.showLogin = (req, res) => {
@@ -47,6 +48,8 @@ exports.register = (req, res) => {
           message: '该昵称已被注册...'
         })
       }
+      data.password = md5(data.password)
+      // 插入数据
       user.save(data, (err, results) => {
         if (err) {
           return res.status(500).json({
