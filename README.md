@@ -37,7 +37,7 @@ app.use(router)
 
 ---
 
-使用body-parser处理表单POST请求
+使用body-parser处理表单请求
 > `npm i body-parser`
 
 ```
@@ -96,15 +96,28 @@ data.password = md5(data.password)
 
 ## 目录结构
 
-- node_modules
-- controller 控制器
-- public 静态资源
-- view 视图
-- app.js 入口文件
-- config.js 配置文件
-- .gitignore 忽略文件
-- package-lock.json
-- README.MD 说明文件
+- **controller** 控制器
+ + index.js 首页控制器
+ + user.js 用户控制器
+ + topic.js 文章控制器
+ + comment.js 评论控制器
+- **models** 模型
+ + user.js 用户模型
+ + topic.js 文章模型
+ + comment.js 评论模型
+- **node_modules** 模块资源
+- **public** 静态资源
+ + css css样式
+ + img 图片资源
+- **view** 视图
+- **.gitignore** 忽略文件
+- **app.js** 入口文件
+- **config.js** 配置文件
+- **ithub.sql** 数据表信息
+- **package-lock.json**
+- **package.json**
+- **README.MD** 说明文件
+- **router.js** 路由管理
 
 <br>
 
@@ -153,7 +166,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
 ```
 
-### 话题表
+### 文章表
 
 ```
 DROP TABLE IF EXISTS `topics`;
@@ -169,7 +182,7 @@ CREATE TABLE `topics` (
 ) ENGINE=InnoDB AUTO_INCREMENT=172 DEFAULT CHARSET=utf8;
 ```
 
-### 话题分类表
+### 文章分类表
 
 ```
 DROP TABLE IF EXISTS `topic_categories`;
