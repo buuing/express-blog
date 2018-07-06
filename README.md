@@ -5,7 +5,7 @@
 
 ## 项目描述
 
-尝试使用nodejs搭建一个类似于论坛社区的网站，用户可以在这里进行登陆注册，登陆成功后可以发帖、评论、删除文章等操作
+使用node.js搭建一个类似于论坛社区的门户网站，在这里用户可以进行登陆注册等一系列相关操作，登陆成功后可以发帖、评论、删除文章等...
 
 <br>
 
@@ -157,7 +157,7 @@ req.session.isLogin = true
 | POST   | /login               | 处理登录请求
 | GET    | /register            | 渲染注册页
 | POST   | /register            | 处理注册请求
-| POST   | /logout              | 处理退出请求
+| GET    | /logout              | 处理退出请求
 | GET    | /topic/create        | 渲染文章发布页面
 | POST   | /topic/create        | 处理文章发布请求
 | GET    | /topic/:topicId      | 渲染文章页面

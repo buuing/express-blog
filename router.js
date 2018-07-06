@@ -19,7 +19,7 @@ router
   .post('/login', userController.login)
   .get('/register', userController.showRegister)
   .post('/register', userController.register)
-  .post('/logout', userController.logout)
+  .get('/logout', userController.logout)
 
 // 文章相关
 // router

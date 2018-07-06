@@ -94,5 +94,8 @@ exports.register = (req, res) => {
 
 // 处理退出请求
 exports.logout = (req, res) => {
-  res.send('logout')
+  // 清除session信息
+  delete req.session.user
+  // 跳转到首页
+  res.redirect('/')
 }
