@@ -3,6 +3,12 @@
 
 <br>
 
+## 项目描述
+
+尝试使用nodejs搭建一个类似于论坛社区的网站，用户可以在这里进行登陆注册，登陆成功后可以发帖、评论、删除文章等操作
+
+<br>
+
 ## 项目介绍
 
 使用express框架来构建node项目
@@ -85,6 +91,27 @@ exports.query = (...args) => {
 const md5 = require('blueimp-md5')
 // 数据加密
 data.password = md5(data.password)
+```
+
+---
+
+使用session存储用户登录状态
+> `npm i express-session`
+
+```
+// 加载session模块
+const session = require('express-session')
+// 配置session开启会话
+app.use(session({
+  // 自定义加密字符串
+  secret: 'buuing.com',
+  resave: false,
+  // 无论是否使用session都会颁发秘钥
+  saveUninitialized: true
+}))
+
+// 添加用户登录状态
+req.session.isLogin = true
 ```
 
 ---

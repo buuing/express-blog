@@ -31,7 +31,8 @@ exports.login = (req, res) => {
         message: '404 not found'
       })
     }
-    // 使用session存储会话信息
+    // 使用session存储登录状态
+    req.session.user = ret
     return res.status(200).json({
       code: 10000,
       message: 'success'

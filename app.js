@@ -1,6 +1,7 @@
 // 加载模块
 const express = require('express')
 const bodyParser = require('body-parser')
+const session = require('express-session')
 const router = require('./router')
 // 创建服务器实例
 const app = express()
@@ -14,6 +15,15 @@ app.use('/public', express.static('./public/'))
 
 // 配置模板引擎
 app.engine('html', require('express-art-template'))
+
+// 配置session开启会话
+app.use(session({
+  // 自定义加密字符串
+  secret: 'buuing.com',
+  resave: false,
+  // 使用session才会配发秘钥
+  saveUninitialized: false
+}))
 
 // 挂载路由容器到app中,使路由生效
 app.use(router)
