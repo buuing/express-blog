@@ -78,7 +78,7 @@ exports.query = (...args) => {
 ---
 
 使用MD5进行数据加密
-> npm i blueimp-md5
+> `npm i blueimp-md5`
 
 ```
 // 加载MD5模块

@@ -10,7 +10,33 @@ exports.showLogin = (req, res) => {
 
 // 处理登录请求
 exports.login = (req, res) => {
-  res.send('register')
+  // 先获取客户端发送过来的数据
+  const data = req.body
+  // 判断邮箱是否存在
+  user.isEmail(data.email, (err, ret) => {
+    if (err) {
+      return res.status(500).json({
+        error: err.message 
+      })
+    }
+    if (!ret) {
+      return res.status(200).json({
+        code: 10003,
+        message: '404 not found'
+      })
+    }
+    if (md5(data.password) !== ret.password) {
+      return res.status(200).json({
+        code: 10004,
+        message: '404 not found'
+      })
+    }
+    // 使用session存储会话信息
+    return res.status(200).json({
+      code: 10000,
+      message: 'success'
+    })
+  })
 }
 
 // 展示注册页面
