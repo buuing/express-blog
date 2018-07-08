@@ -35,5 +35,12 @@ app.use(indexRouter)
 app.use(userRouter)
 app.use('/topic', topicRouter)
 
+// 错误处理中间件
+app.use((err, req, res, next) => {
+  res.status(500).send({
+    error: err.message
+  })
+})
+
 // 监听3000端口
 app.listen(3000, () => console.log(new Date()) )

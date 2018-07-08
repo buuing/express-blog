@@ -4,20 +4,18 @@ const user = require('../models/user')
 const md5 = require('blueimp-md5')
 
 // 展示登录页面
-exports.showLogin = (req, res) => {
+exports.showLogin = (req, res, next) => {
   res.render('login.html')
 }
 
 // 处理登录请求
-exports.login = (req, res) => {
+exports.login = (req, res, next) => {
   // 先获取客户端发送过来的数据
   const data = req.body
   // 判断邮箱是否存在
   user.isEmail(data.email, (err, ret) => {
     if (err) {
-      return res.status(500).json({
-        error: err.message 
-      })
+      return next(err)
     }
     if (!ret) {
       return res.status(200).json({
@@ -41,20 +39,18 @@ exports.login = (req, res) => {
 }
 
 // 展示注册页面
-exports.showRegister = (req, res) => {
+exports.showRegister = (req, res, next) => {
   res.render('register.html')
 }
 
 // 处理注册请求
-exports.register = (req, res) => {
+exports.register = (req, res, next) => {
   // 获取客户端发送过来的数据
   const data = req.body
   // 判断邮箱是否被占用
   user.isEmail(data.email, (err, ret) => {
     if (err) {
-      return res.status(500).json({
-        error: err.message
-      })
+      return next(err)
     }
     if (ret) {
       return res.status(200).json({
@@ -65,9 +61,7 @@ exports.register = (req, res) => {
     // 判断昵称是否被占用
     user.isNickname(data.nickname, (err, ret) => {
       if (err) {
-        return res.status(500).json({
-          error: err.message
-        })
+        return next(err)
       }
       if (ret) {
         return res.status(200).json({
@@ -79,9 +73,7 @@ exports.register = (req, res) => {
       // 插入数据
       user.save(data, (err, results) => {
         if (err) {
-          return res.status(500).json({
-            error: err.message
-          })
+          return next(err)
         }
         res.status(200).json({
           code: 10000,
@@ -93,7 +85,7 @@ exports.register = (req, res) => {
 }
 
 // 处理退出请求
-exports.logout = (req, res) => {
+exports.logout = (req, res, next) => {
   // 清除session信息
   delete req.session.user
   // 跳转到首页
