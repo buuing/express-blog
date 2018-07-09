@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+  {{include '../_includes/header.html'}}
+  <section class="container">
+  <div class="row" style="padding: 30px">
+    <div class="col-md-5">
+      <form id="topic_form" action="/topic/create" method="post">
+        <div class="form-group">
+          <label for="sel">选择板块</label>
+          <select class="form-control" id="sel" name="">
+            {{ each topics }}
+            <option value="{{$value.id}}">{{$value.name}}</option>
+            {{ /each }}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="title">标题</label>
+          <input type="text" class="form-control" name="title" id="title" placeholder="Title">
+        </div>
+        <div class="form-group">
+          <label for="content">内容</label>
+          <textarea class="form-control" name="content" id="content" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-default">发布文章</button>
+      </form>
+    </div>
+  </div>
+</section>
+  {{include '../_includes/footer.html'}}
+  <script src="/node_modules/jquery/dist/jquery.js"></script>
+  <script src="/node_modules/jquery-form/dist/jquery.form.min.js"></script>
+  <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
+  <script>
+    $('#topic_form').on('submit', function (e) {
+      e.preventDefault()
+      $(this).ajaxSubmit((data) => {
+        switch (data.code) {
+          case 10000:
+            window.alert('发表成功')
+            window.location.href = '/'
+            break
+        }
+      })
+    })
+  </script>
+</body>
+</html>

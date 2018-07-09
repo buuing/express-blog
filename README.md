@@ -111,40 +111,80 @@ app.use(session({
 }))
 
 // 添加用户登录状态
-req.session.isLogin = true
+req.session.user = user
 ```
 
 ---
 
-使用bootstrap和jquery渲染css样式布局和DOM操作
+使用app.use中间件处理错误
+```
+// 配置错误处理中间件
+app.use((err, req, res, next) => {
+  res.status(500).send({
+    error: err.message
+  })
+})
+```
+只需要在后面的函数中`return next(err)`即可
+
+---
+
+使用app.locals全局模板对象,来存储session中的用户信息
+```
+app.use((req, res, next) => {
+  app.locals.user = req.session.user
+})
+```
+
+---
+
+使用jquery-form处理表单数据
+> `npm i jquery-form`
+
+```
+$('#form').on('submit', function (e) {
+  e.preventDefault()
+  $(this).ajaxSubmit((res) => {
+    console.log(res)
+  })
+})
+```
+
+---
+
+使用moment时间类库处理时间
+> `npm i moment`
+
+```
+// 加载moment模块
+const moment = require('moment')
+// 调用
+moment().format('YYYY-MM-DD HH:mm:ss')
+```
+
+---
+
+使用bootstrap和jquery渲染css样式布局和数据交互
 > `npm i bootstrap@3.3.7 jquery`
 
 <br>
 
 ## 目录结构
 
-- **controller** 控制器
- + index.js 首页控制器
- + user.js 用户控制器
- + topic.js 文章控制器
- + comment.js 评论控制器
-- **models** 模型
- + user.js 用户模型
- + topic.js 文章模型
- + comment.js 评论模型
-- **node_modules** 模块资源
-- **public** 静态资源
- + css css样式
- + img 图片资源
-- **view** 视图
-- **.gitignore** 忽略文件
-- **app.js** 入口文件
-- **config.js** 配置文件
-- **ithub.sql** 数据表信息
-- **package-lock.json**
-- **package.json**
-- **README.MD** 说明文件
-- **router.js** 路由管理
+- controller 控制器
+- middlewares 中间件模块
+- models 模型
+- node_modules 第三方模块
+- public 静态资源
+- routes 路由模块
+- view 视图
+- .gitignore 忽略文件
+- app.js 入口文件
+- config.js 配置文件
+- ithub.sql 数据表信息
+- package-lock.json
+- package.json
+- README.MD 说明文件
 
 <br>
 
@@ -203,8 +243,8 @@ CREATE TABLE `topics` (
   `content` longtext NOT NULL,
   `categoryId` int(11) DEFAULT NULL,
   `userId` int(11) NOT NULL,
-  `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
+  `createdAt` timestamp NOT NULL,
+  `updatedAt` timestamp NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=172 DEFAULT CHARSET=utf8;
 ```
@@ -216,8 +256,8 @@ DROP TABLE IF EXISTS `topic_categories`;
 CREATE TABLE `topic_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
-  `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
+  `createdAt` timestamp NOT NULL,
+  `updatedAt` timestamp NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 ```
@@ -230,8 +270,8 @@ CREATE TABLE `topic_comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `content` varchar(255) NOT NULL,
   `userId` int(255) NOT NULL,
-  `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
+  `createdAt` timestamp NOT NULL,
+  `updatedAt` timestamp NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```

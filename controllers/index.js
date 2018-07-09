@@ -2,7 +2,5 @@
 
 // 展示首页
 exports.showIndex = (req, res) => {
-  res.render('index.html', {
-    user: req.session.user
-  })
+  res.render('index.html')
 }

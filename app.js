@@ -2,6 +2,9 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const session = require('express-session')
+const moment = require('moment')
+// 自定义处理中间件
+const handle = require('./middlewares/handle')
 
 // 创建服务器实例
 const app = express()
@@ -30,17 +33,25 @@ app.use(session({
   saveUninitialized: false
 }))
 
+// 配置全局模板对象
+app.use((req, res, next) => {
+  app.locals.user = req.session.user
+  next()
+})
+
+// 打印路由
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path}`)
+  next()
+})
+
 // 挂载路由
 app.use(indexRouter)
 app.use(userRouter)
-app.use('/topic', topicRouter)
+app.use('/topic', handle.isLogin, topicRouter)
 
-// 错误处理中间件
-app.use((err, req, res, next) => {
-  res.status(500).send({
-    error: err.message
-  })
-})
+// 配置全局错误处理中间件
+app.use(handle.handleErr)
 
 // 监听3000端口
-app.listen(3000, () => console.log(new Date()) )
+app.listen(3000, () => console.log(moment().format('YYYY-MM-DD HH:mm:ss')))
