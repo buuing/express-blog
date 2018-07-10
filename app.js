@@ -4,16 +4,24 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const moment = require('moment')
 const responseTime = require('response-time')
+const morgan = require('morgan')
+const compression = require('compression')
 // 自定义处理中间件
 const handle = require('./middlewares/handle')
 
 // 创建服务器实例
 const app = express()
 
+// 压缩所有请求响应
+app.use(compression())
+
 // 加载路由模块
 const indexRouter = require('./routes/index')
 const userRouter = require('./routes/user')
 const topicRouter = require('./routes/topic')
+
+// 配置response-time
+app.use(responseTime())
 
 // 开放静态资源
 app.use('/node_modules', express.static('./node_modules/'))
@@ -40,14 +48,8 @@ app.use((req, res, next) => {
   next()
 })
 
-// 打印路由(自定义中间件)
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.path}`)
-  next()
-})
-
-// 配置response-time
-app.use(responseTime())
+// 打印请求日志
+app.use(morgan('tiny'))
 
 // 挂载路由(路由中间件)
 app.use(indexRouter)

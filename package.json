@@ -22,12 +22,14 @@
     "blueimp-md5": "^2.10.0",
     "body-parser": "^1.18.3",
     "bootstrap": "^3.3.7",
+    "compression": "^1.7.2",
     "express": "^4.16.3",
     "express-art-template": "^1.0.1",
     "express-session": "^1.15.6",
     "jquery": "^3.3.1",
     "jquery-form": "^4.2.2",
     "moment": "^2.22.2",
+    "morgan": "^1.9.0",
     "mysql": "^2.15.0",
     "response-time": "^2.3.2"
   }
