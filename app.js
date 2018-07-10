@@ -53,5 +53,10 @@ app.use('/topic', handle.isLogin, topicRouter)
 // 配置全局错误处理中间件
 app.use(handle.handleErr)
 
+// 配置404中间件
+app.use((req, res) => {
+  res.render('404.html')
+})
+
 // 监听3000端口
 app.listen(3000, () => console.log(moment().format('YYYY-MM-DD HH:mm:ss')))
