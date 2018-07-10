@@ -3,6 +3,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const moment = require('moment')
+const responseTime = require('response-time')
 // 自定义处理中间件
 const handle = require('./middlewares/handle')
 
@@ -39,21 +40,28 @@ app.use((req, res, next) => {
   next()
 })
 
-// 打印路由
+// 打印路由(自定义中间件)
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.path}`)
   next()
 })
 
-// 挂载路由
+// 配置response-time
+app.use(responseTime())
+
+// 挂载路由(路由中间件)
 app.use(indexRouter)
 app.use(userRouter)
 app.use('/topic', handle.isLogin, topicRouter)
 
-// 配置全局错误处理中间件
-app.use(handle.handleErr)
+// 配置全局错误处理(err中间件)
+app.use((err, req, res, next) => {
+  res.status(500).send({
+    error: err.message
+  })
+})
 
-// 配置404中间件
+// 配置404页面(404中间件)
 app.use((req, res) => {
   res.render('404.html')
 })

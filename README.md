@@ -33,6 +33,15 @@ app.engine('html', require('express-art-template'))
 
 ---
 
+使用内置中间件开放静态资源目录
+```
+// 开放静态资源目录
+app.use('/node_modules', express.static('./node_modules/'))
+app.use('/public', express.static('./public/'))
+```
+
+---
+
 使用router进行路由管理
 ```
 // 创建路由实例
@@ -160,6 +169,18 @@ $('#form').on('submit', function (e) {
 const moment = require('moment')
 // 调用
 moment().format('YYYY-MM-DD HH:mm:ss')
+```
+
+---
+
+使用第三方中间件response-time记录响应时间
+> `npm i response-time`
+
+```
+// 加载模块
+const responseTime = require('response-time')
+// 会自动在http响应头中加入响应时间相关信息
+app.use(responseTime())
 ```
 
 ---
