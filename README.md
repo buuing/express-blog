@@ -104,19 +104,35 @@ data.password = md5(data.password)
 
 ---
 
-使用session存储用户登录状态
-> `npm i express-session`
+使用session存储用户登录状态,并使用express-mysql-session持久化存储登录状态
+> `npm i express-session express-mysql-session`
 
 ```
 // 加载session模块
 const session = require('express-session')
+const MySQLStore = require('express-mysql-session')(session)
+// 配置信息
+const options = {
+  host: '127.0.0.1',
+  port: 3306,
+  user: 'root',
+  password: '1234',
+  database: 'test'
+}
 // 配置session开启会话
 app.use(session({
   // 自定义加密字符串
   secret: 'buuing.com',
+  // 持久化存储
+  store: sessionStore,
+  // 配置cookie
+  cookie: {
+    // 过期时间(单位为毫秒)
+    maxAge: 1000*60*60*12*1
+  },
   resave: false,
-  // 无论是否使用session都会颁发秘钥
-  saveUninitialized: true
+  // 使用session才会配发秘钥
+  saveUninitialized: false
 }))
 
 // 添加用户登录状态

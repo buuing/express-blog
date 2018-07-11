@@ -2,12 +2,17 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const session = require('express-session')
+const MySQLStore = require('express-mysql-session')(session)
 const moment = require('moment')
 const responseTime = require('response-time')
 const morgan = require('morgan')
 const compression = require('compression')
 // 自定义处理中间件
 const handle = require('./middlewares/handle')
+const config = require('./config')
+
+// 连接到数据库存储登录状态
+const sessionStore = new MySQLStore(config.dbConfig)
 
 // 创建服务器实例
 const app = express()
@@ -19,7 +24,6 @@ app.use(compression())
 const indexRouter = require('./routes/index')
 const userRouter = require('./routes/user')
 const topicRouter = require('./routes/topic')
-
 // 配置response-time
 app.use(responseTime())
 
@@ -37,6 +41,13 @@ app.engine('html', require('express-art-template'))
 app.use(session({
   // 自定义加密字符串
   secret: 'buuing.com',
+  // 持久化存储
+  store: sessionStore,
+  // 配置cookie
+  cookie: {
+    // 过期时间(单位为毫秒)
+    maxAge: 1000*60*60*12*1
+  },
   resave: false,
   // 使用session才会配发秘钥
   saveUninitialized: false
