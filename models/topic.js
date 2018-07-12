@@ -13,3 +13,14 @@ exports.save = (data, callback) => {
   const sql = 'INSERT INTO `topics` SET ?'
   query(sql, data, callback)
 }
+
+// 根据文章id查询内容
+exports.selectById = (id, callback) => {
+  const sql = 'SELECT * FROM `topics` WHERE `id` = ?'
+  query(sql, id, (err, results) => {
+    if (err) {
+      return callback(err, undefined)
+    }
+    callback(null, results[0])
+  })
+}

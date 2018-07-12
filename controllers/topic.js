@@ -1,6 +1,7 @@
 /* 文章控制器 */
 
 const topic = require('../models/topic')
+const marked = require('marked')
 
 // 展示发表文章页
 exports.showCreate = (req, res, next) => {
@@ -29,6 +30,7 @@ exports.create = (req, res, next) => {
     if (err) {
       return next(err)
     }
+    console.log(results)
     res.status(200).json({
       code: 10000,
       message: 'success'
@@ -36,8 +38,21 @@ exports.create = (req, res, next) => {
   })
 }
 
+// 展示文章页面
 exports.showTopic = (req, res, next) => {
-  res.send('showTopic')
+  // req.params可以获取到路由id参数
+  const topicId = req.params.topicId
+  // 根据id拿到数据
+  topic.selectById(topicId, (err, topic) => {
+    if (err) {
+      return next(err)
+    }
+    topic && ( topic.content = marked(topic.content) )
+
+    res.render('topic/show.html', {
+      topic
+    })
+  })
 }
 
 exports.showEdit = (req, res, next) => {
