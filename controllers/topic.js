@@ -55,14 +55,28 @@ exports.showTopic = (req, res, next) => {
   })
 }
 
+// 展示编辑页面
 exports.showEdit = (req, res, next) => {
   res.send('showEdit')
 }
 
+// 处理编辑请求
 exports.edit = (req, res, next) => {
   res.send('edit')
 }
 
+// 处理删除请求
 exports.del = (req, res, next) => {
-  res.send('del')
+  // 获取文章id
+  const topicId = req.params.topicId
+  topic.deleteById(topicId, (err, results) => {
+    if (err) {
+      return next(err)
+    }
+    console.log(results)
+    return res.status(200).json({
+      code: 10000,
+      message: 'success of delete'
+    })
+  })
 }

@@ -24,3 +24,9 @@ exports.selectById = (id, callback) => {
     callback(null, results[0])
   })
 }
+
+// 根据文章id进行删除
+exports.deleteById = (id, callback) => {
+  const sql = 'DELETE FROM `topics` WHERE `id` = ?'
+  query(sql, [id], callback)
+}
