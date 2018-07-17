@@ -30,10 +30,10 @@
       </div>
       {{ else }}
       <div class="col-md-5">
-        <form id="topic_form" action="/topic/{{topicId}}/edit">
+        <form id="topic_form" action="/topic/{{topicId}}/edit" method="post">
           <div class="form-group">
             <label for="sel">选择板块</label>
-            <select class="form-control" id="sel" name="">
+            <select class="form-control" id="sel" name="categoryId">
               {{ each topics }}
                 {{ if results.categoryId === $value.id }}
                 <option value="{{$value.id}}" selected="true">{{ $value.name }}</option>
@@ -59,6 +59,7 @@
   </section>
   {{include '../_includes/footer.html'}}
   <script src="/node_modules/jquery/dist/jquery.js"></script>
+  <script src="/node_modules/jquery-form/dist/jquery.form.min.js"></script>
   <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
   <script>
     var editor = new Editor();
@@ -66,20 +67,23 @@
     // 处理表单提交
     $('#topic_form').on('submit', function (e) {
       e.preventDefault()
-      // 获取接口
-      const url = $(this).attr('action')
-      // 发送请求
-      $.ajax({
-        url: url,
-        type: 'post',
-        datatype: 'json',
-        success: function (res) {
-          console.log(res)
-          
+      // 处理请求
+      $(this).ajaxSubmit((res) => {
+        console.log(res)
+        switch (res.code) {
+          case 10000:
+            window.alert(`修改成功`)
+            window.location.href = `/topic/${res.topicId}`
+            break
+          case 10007:
+            window.alert('该资源不存在或已被删除')
+            break
+          case 10008:
+            window.alert(res.message)
+            break
         }
       })
     })
   </script>
 </body>
-
 </html>

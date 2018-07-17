@@ -32,6 +32,7 @@ exports.deleteById = (id, callback) => {
 }
 
 // 根据文章id修改内容
-exports.editById = (id, callback) => {
-  const sql = ''
+exports.editById = (id, data, callback) => {
+  const sql = 'UPDATE `topics` SET `title`=?, `content`=?, `categoryId`=? WHERE `id`=?'
+  query(sql, [data.title, data.content, data.categoryId, id], callback)
 }

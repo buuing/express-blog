@@ -68,12 +68,6 @@ exports.showEdit = (req, res, next) => {
       if (err) {
         return next(err)
       }
-      // if (!results) {
-      //   return res.status(200).json({
-      //     code: 10007,
-      //     message: '该文章不存在或已被删除'
-      //   })
-      // }
       return res.render('topic/edit.html', {
         topics,
         topicId,
@@ -87,41 +81,39 @@ exports.showEdit = (req, res, next) => {
 exports.edit = (req, res, next) => {
   // 获取文章id
   const topicId = req.params.topicId
+  // 获取表单提交的数据
+  const data = req.body
   // 根据文章id修改内容
+  topic.editById(topicId, data, (err, results) => {
+    if (err) {
+      return next(err)
+    }
+    if (!results) {
+      return res.status(200).json({
+        code: 10007,
+        message: '资源不存在'
+      })
+    }
+    return res.status(200).json({
+      code: 10000,
+      message: 'success',
+      topicId
+    })
+  })
 }
 
 // 处理删除请求
 exports.del = (req, res, next) => {
   // 获取文章id
   const topicId = req.params.topicId
-  // 根据id查询该文章作者id
-  topic.selectById(topicId, (err, topic) => {
+  // 执行删除
+  topic.deleteById(topicId, (err, results) => {
     if (err) {
       return next(err)
     }
-    if (!topic) {
-      return res.status(200).json({
-        code: 10007,
-        message: '该文章不存在或已被删除'
-      })
-    }
-    // 如果文章所属用户id不等于当前用户id
-    if (req.session.user.id !== topic.userId) {
-      return res.status(200).json({
-        code: 10008,
-        message: '该文章不是您发布的'
-      })
-    }
-    // 执行删除
-    topic.deleteById(topicId, (err, results) => {
-      if (err) {
-        return next(err)
-      }
-      console.log('no')
-      return res.status(200).json({
-        code: 10000,
-        message: 'success of delete'
-      })
+    return res.status(200).json({
+      code: 10000,
+      message: 'success'
     })
   })
 }
