@@ -30,3 +30,8 @@ exports.deleteById = (id, callback) => {
   const sql = 'DELETE FROM `topics` WHERE `id` = ?'
   query(sql, [id], callback)
 }
+
+// 根据文章id修改内容
+exports.editById = (id, callback) => {
+  const sql = ''
+}

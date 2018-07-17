@@ -64,11 +64,21 @@
   <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
   <script>
     // 修改文章
-    $('#topic-edit').on('click', function (e) {
-      e.preventDefault()
-      if (!window.confirm('是否要修改')) return
-      console.log($(this).attr('href'))
-    })
+    // $('#topic-edit').on('click', function (e) {
+      // e.preventDefault()
+      // if (!window.confirm('是否要修改')) return
+      // 获取接口地址
+      // const url = $(this).attr('href')
+      // 发送请求
+      // $.ajax({
+      //   url: url,
+      //   type: 'post',
+      //   datatype: 'json',
+      //   success: function (res) {
+      //     console.log(res)
+      //   }
+      // })
+    // })
     // 删除文章
     $('#topic-del').on('click', function (e) {
       e.preventDefault()

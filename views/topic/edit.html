@@ -1,42 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/editor/0.1.0/editor.css">
+  <script src="//cdn.jsdelivr.net/editor/0.1.0/editor.js"></script>
+  <script src="//cdn.jsdelivr.net/editor/0.1.0/marked.js"></script>
+  <style>
+    form {
+      border-radius: 6px;
+      padding: 15px 10px;
+      border: 1px solid #ccc;
+    }
+  </style>
 </head>
-
 <body>
   {{include '../_includes/header.html'}}
   <section class="container">
-  <div class="row">
-    <div class="col-md-5">
-      <form>
-        <div class="form-group">
-          <label for="exampleInputEmail1">选择板块</label>
-          <select class="form-control">
-            <option>分享</option>
-            <option>问答</option>
-            <option>招聘</option>
-            <option>客户端测试</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="exampleInputEmail1">标题</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">内容</label>
-          <textarea class="form-control" rows="3"></textarea>
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
+    <div class="row">
+      <!-- 如果没有数据 -->
+      {{ if !results }}
+      <div class="alert alert-danger" role="alert">
+        <strong>404 找不到该文章</strong>
+      </div>
+      <!-- 如果用户id和文章所属id不匹配 -->
+      {{ else if results.userId !== user.id }}
+      <div class="alert alert-danger" role="alert">
+        <strong>该用户没有编辑这篇文章的权限</strong>
+      </div>
+      {{ else }}
+      <div class="col-md-5">
+        <form id="topic_form" action="/topic/{{topicId}}/edit">
+          <div class="form-group">
+            <label for="sel">选择板块</label>
+            <select class="form-control" id="sel" name="">
+              {{ each topics }}
+                {{ if results.categoryId === $value.id }}
+                <option value="{{$value.id}}" selected="true">{{ $value.name }}</option>
+                {{ else }}
+                <option value="{{$value.id}}">{{ $value.name }}</option>
+                {{ /if }}
+              {{ /each }}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="title">标题</label>
+            <input type="text" class="form-control" name="title" id="title" placeholder="Title" value="{{ results.title }}">
+          </div>
+          <div class="form-group">
+            <label for="content">内容</label>
+            <textarea class="form-control my-ldq" name="content" id="content" rows="3">{{ results.content }}</textarea>
+          </div>
+          <button type="submit" class="btn btn-default">发布文章</button>
+        </form>
+      </div>
+      {{ /if }}
     </div>
-  </div>
-</section>
+  </section>
   {{include '../_includes/footer.html'}}
   <script src="/node_modules/jquery/dist/jquery.js"></script>
   <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
+  <script>
+    var editor = new Editor();
+    editor.render();
+    // 处理表单提交
+    $('#topic_form').on('submit', function (e) {
+      e.preventDefault()
+      // 获取接口
+      const url = $(this).attr('action')
+      // 发送请求
+      $.ajax({
+        url: url,
+        type: 'post',
+        datatype: 'json',
+        success: function (res) {
+          console.log(res)
+          
+        }
+      })
+    })
+  </script>
 </body>
 
 </html>

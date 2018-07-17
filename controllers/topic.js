@@ -29,7 +29,7 @@ exports.create = (req, res, next) => {
     if (err) {
       return next(err)
     }
-    console.log(results.insertId)
+    // console.log(results.insertId)
     res.status(200).json({
       code: 10000,
       message: 'success',
@@ -57,12 +57,37 @@ exports.showTopic = (req, res, next) => {
 
 // 展示编辑页面
 exports.showEdit = (req, res, next) => {
-  res.send('showEdit')
+  topic.findAll((err, topics) => {
+    if (err) {
+      return next(err)
+    }
+    // 获取文章id
+    const topicId = req.params.topicId
+    // 根据文章id查询内容
+    topic.selectById(topicId, (err, results) => {
+      if (err) {
+        return next(err)
+      }
+      // if (!results) {
+      //   return res.status(200).json({
+      //     code: 10007,
+      //     message: '该文章不存在或已被删除'
+      //   })
+      // }
+      return res.render('topic/edit.html', {
+        topics,
+        topicId,
+        results
+      })
+    })
+  })
 }
 
 // 处理编辑请求
 exports.edit = (req, res, next) => {
-  res.send('edit')
+  // 获取文章id
+  const topicId = req.params.topicId
+  // 根据文章id修改内容
 }
 
 // 处理删除请求

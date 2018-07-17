@@ -22,7 +22,7 @@
       <form id="topic_form" action="/topic/create" method="post">
         <div class="form-group">
           <label for="sel">选择板块</label>
-          <select class="form-control" id="sel" name="">
+          <select class="form-control" id="sel" name="categoryId">
             {{ each topics }}
             <option value="{{$value.id}}">{{$value.name}}</option>
             {{ /each }}
