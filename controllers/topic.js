@@ -24,16 +24,16 @@ exports.create = (req, res, next) => {
     createdAt: null,
     userId: req.session.user.id
   }
-  console.log(data)
   // 保存文章数据
   topic.save(data, (err, results) => {
     if (err) {
       return next(err)
     }
-    console.log(results)
+    console.log(results.insertId)
     res.status(200).json({
       code: 10000,
-      message: 'success'
+      message: 'success',
+      topicId: results.insertId
     })
   })
 }
@@ -69,14 +69,34 @@ exports.edit = (req, res, next) => {
 exports.del = (req, res, next) => {
   // 获取文章id
   const topicId = req.params.topicId
-  topic.deleteById(topicId, (err, results) => {
+  // 根据id查询该文章作者id
+  topic.selectById(topicId, (err, topic) => {
     if (err) {
       return next(err)
     }
-    console.log(results)
-    return res.status(200).json({
-      code: 10000,
-      message: 'success of delete'
+    if (!topic) {
+      return res.status(200).json({
+        code: 10007,
+        message: '该文章不存在或已被删除'
+      })
+    }
+    // 如果文章所属用户id不等于当前用户id
+    if (req.session.user.id !== topic.userId) {
+      return res.status(200).json({
+        code: 10008,
+        message: '该文章不是您发布的'
+      })
+    }
+    // 执行删除
+    topic.deleteById(topicId, (err, results) => {
+      if (err) {
+        return next(err)
+      }
+      console.log('no')
+      return res.status(200).json({
+        code: 10000,
+        message: 'success of delete'
+      })
     })
   })
 }

@@ -81,9 +81,22 @@
         type: 'post',
         datatype: 'json',
         success: function (res) {
-          if (res.code === 10000) {
-            window.alert('删除成功')
-            window.location.href = '/'
+          switch (res.code) {
+            case 10000:
+              window.alert('删除成功')
+              window.location.href = '/'
+              break
+            case 10007:
+              window.alert(res.message)
+              // window.location.reload()
+              break
+            case 10008:
+              window.alert('删除成功')
+              window.alert('??? 怎么可能, 你仿佛在逗我')
+              window.alert('我怎么可能犯这种低级错误')
+              window.alert('傻孩子别玩了, 洗洗睡吧')
+              // window.location.reload()
+              break
           }
         }
       })
