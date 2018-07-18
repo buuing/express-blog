@@ -1,6 +1,10 @@
 
 > git clone https://github.com/buuing/express-blog.git
 
+---
+target: aaa
+---
+
 <br>
 
 ## 项目描述
@@ -197,6 +201,21 @@ moment().format('YYYY-MM-DD HH:mm:ss')
 const responseTime = require('response-time')
 // 会自动在http响应头中加入响应时间相关信息
 app.use(responseTime())
+```
+
+---
+
+使用esLint代码风格强校验工具
+> `npm i eslint --save-dev`
+> `./node_modules/.bin/eslint --init`
+
+```
+// 在package.json文件中加入如下代码, 使每次重启服务器都进进行一次代码校验
+"scripts": {
+  "prestart": "eslint ./",
+  "start": "node ./app.js",
+  "dev": "nodemon --exec npm start"
+},
 ```
 
 ---

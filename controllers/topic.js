@@ -47,8 +47,7 @@ exports.showTopic = (req, res, next) => {
     if (err) {
       return next(err)
     }
-    topic && ( topic.content = marked(topic.content) )
-
+    topic && (topic.content = marked(topic.content))
     res.render('topic/show.html', {
       topic
     })

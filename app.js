@@ -46,7 +46,7 @@ app.use(session({
   // 配置cookie
   cookie: {
     // 过期时间(单位为毫秒)
-    maxAge: 1000*60*60*12*1
+    maxAge: 1000 * 60 * 60 * 12 * 1
   },
   resave: false,
   // 使用session才会配发秘钥

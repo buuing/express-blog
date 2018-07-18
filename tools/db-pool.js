@@ -14,11 +14,13 @@ exports.query = (...args) => {
       return callback(err, undefined)
     }
     // 执行sql语句
-    connection.query(...args, (...results) => {
+    connection.query(...args, (err, results) => {
       // 释放连接
       connection.release()
-      // .
-      callback(...results)
+      if (err) {
+        return callback(err, undefined)
+      }
+      callback(null, results)
     })
   })
 }
