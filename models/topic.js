@@ -3,7 +3,7 @@
 const {query} = require('../tools/db-pool')
 
 // 查询文章分类
-exports.findAll = (callback) => {
+exports.findCategory = (callback) => {
   const sql = 'SELECT * FROM `topic_categories`'
   query(sql, callback)
 }

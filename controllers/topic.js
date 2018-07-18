@@ -5,7 +5,7 @@ const marked = require('marked')
 
 // 展示发表文章页
 exports.showCreate = (req, res, next) => {
-  topic.findAll((err, topics) => {
+  topic.findCategory((err, topics) => {
     if (err) {
       return next(err)
     }
@@ -57,7 +57,7 @@ exports.showTopic = (req, res, next) => {
 
 // 展示编辑页面
 exports.showEdit = (req, res, next) => {
-  topic.findAll((err, topics) => {
+  topic.findCategory((err, topics) => {
     if (err) {
       return next(err)
     }
