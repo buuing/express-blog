@@ -7,8 +7,6 @@ const moment = require('moment')
 const responseTime = require('response-time')
 const morgan = require('morgan')
 const compression = require('compression')
-// 自定义处理中间件
-const handle = require('./middlewares/handle')
 const config = require('./config')
 
 // 连接到数据库存储登录状态
@@ -65,7 +63,7 @@ app.use(morgan('tiny'))
 // 挂载路由(路由中间件)
 app.use(indexRouter)
 app.use(userRouter)
-app.use('/topic', handle.isLogin, topicRouter)
+app.use('/topic', topicRouter)
 
 // 配置全局错误处理(err中间件)
 app.use((err, req, res, next) => {
