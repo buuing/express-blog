@@ -206,11 +206,11 @@ app.use(responseTime())
 ---
 
 使用esLint代码风格强校验工具
-> `npm i eslint --save-dev`
+> `npm i eslint nodemon --save-dev`
 > `./node_modules/.bin/eslint --init`
 
+在package.json文件中加入如下代码, 使每次重启服务器都进进行一次代码校验
 ```
-// 在package.json文件中加入如下代码, 使每次重启服务器都进进行一次代码校验
 "scripts": {
   "prestart": "eslint ./",
   "start": "node ./app.js",
@@ -246,20 +246,25 @@ app.use(responseTime())
 
 ## 路由设计
 
-| 请求方法 | 请求路径 | 说明
-| ------ | -------------------- | ----
-| GET    | /                    | 渲染首页
-| GET    | /login               | 渲染登录页
-| POST   | /login               | 处理登录请求
-| GET    | /register            | 渲染注册页
-| POST   | /register            | 处理注册请求
-| GET    | /logout              | 处理退出请求
+| 请求方式 | 请求路径 | 说明
+| ------ | --------- | ----
+| GET    | /         | 渲染首页
+| GET    | /login    | 渲染登录页
+| POST   | /login    | 处理登录请求
+| GET    | /register | 渲染注册页
+| POST   | /register | 处理注册请求
+| GET    | /logout   | 处理退出请求
 | GET    | /topic/create        | 渲染文章发布页面
 | POST   | /topic/create        | 处理文章发布请求
 | GET    | /topic/:topicId      | 渲染文章页面
 | GET    | /topic/:topicId/edit | 渲染文章修改页面
 | POST   | /topic/:topicId/edit | 处理文章修改请求
 | POST   | /topic/:topicId/del  | 处理文章删除请求
+| GET    | /topic/:topicId/comment                 | 获取所有评论
+| POST   | /topic/:topicId/comment                 | 发表评论
+| GET    | /topic/:topicId/comment/:commentId/edit | 获取编辑评论内容
+| POST   | /topic/:topicId/comment/:commentId/edit | 处理编辑请求
+| POST   | /topic/:topicId/comment/:commentId/del  | 处理删除请求
 
 <br>
 
@@ -326,6 +331,7 @@ CREATE TABLE `topic_comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `content` varchar(255) NOT NULL,
   `userId` int(255) NOT NULL,
+  `topicId` int(255) NOT NULL,
   `createdAt` timestamp NOT NULL,
   `updatedAt` timestamp NOT NULL,
   PRIMARY KEY (`id`)

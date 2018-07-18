@@ -22,6 +22,7 @@ app.use(compression())
 const indexRouter = require('./routes/index')
 const userRouter = require('./routes/user')
 const topicRouter = require('./routes/topic')
+const commentRouter = require('./routes/comment')
 // 配置response-time
 app.use(responseTime())
 
@@ -64,6 +65,7 @@ app.use(morgan('tiny'))
 app.use(indexRouter)
 app.use(userRouter)
 app.use('/topic', topicRouter)
+app.use('/topic', commentRouter)
 
 // 配置全局错误处理(err中间件)
 app.use((err, req, res, next) => {

@@ -35,6 +35,7 @@ CREATE TABLE `topic_comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `content` varchar(255) NOT NULL,
   `userId` int(255) NOT NULL,
+  `topicId` int(255) NOT NULL,
   `createdAt` timestamp NOT NULL,
   `updatedAt` timestamp NOT NULL,
   PRIMARY KEY (`id`)
