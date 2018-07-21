@@ -74,12 +74,20 @@
     $('#form-comment').on('submit', function (e) {
       e.preventDefault()
       // 获取评论内容
-      $(this).ajaxSubmit(function (res) {
-        switch (res.code) {
-          case 10000:
-            window.alert('发表成功')
-            window.location.reload()
-            break
+      $(this).ajaxSubmit({
+        success: function (res) {
+          switch (res.code) {
+            case 10000:
+              window.alert('发表成功')
+              window.location.reload()
+              break
+          }
+        },
+        error: function (err) {
+          if (err && err.status === 401) {
+            window.alert('登录已过期')
+            window.location.href = '/login'
+          }
         }
       })
     })

@@ -12,6 +12,13 @@ exports.handleErr = (err, req, res, next) => {
 // 判断是否登录
 exports.isLogin = (req, res, next) => {
   if (!req.session.user) {
+    // 请求类型同步/异步
+    const reqType = req.get('X-Requested-With')
+    // 如果为异步则
+    if (reqType && reqType === 'XMLHttpRequest') {
+      return res.sendStatus(401)
+    }
+    // 否则就是同步请求
     return res.redirect('/login')
   }
   next()

@@ -80,4 +80,4 @@ app.use((req, res) => {
 })
 
 // 监听3000端口
-app.listen(3000, () => console.log(moment().format('YYYY-MM-DD HH:mm:ss')))
+app.listen(8080, () => console.log(moment().format('YYYY-MM-DD HH:mm:ss')))
