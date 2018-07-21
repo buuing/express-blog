@@ -44,13 +44,19 @@
         </div>
       </div>
       <hr>
-      <form>
+      {{ if user }}
+      <form id="form-comment" action="/topic/{{topic.id}}/comment" method="post">
         <div class="form-group">
-          <label for="exampleInputPassword1">添加回复</label>
-          <textarea class="form-control" name="" id="" cols="10" rows="10"></textarea>
+          <label for="content">添加回复</label>
+          <textarea class="form-control" name="content" id="content" cols="10" rows="10"></textarea>
         </div>
         <button type="submit" class="btn btn-success">回复</button>
       </form>
+      {{ else }}
+      <div class="alert alert-info" role="alert">
+        <a href="/login">登录</a> 之后才能进行评论
+      </div>
+      {{ /if }}
     </div>
     {{ else }}
     <div class="alert alert-danger" role="alert">
@@ -61,24 +67,23 @@
 </section>
   {{include '../_includes/footer.html'}}
   <script src="/node_modules/jquery/dist/jquery.js"></script>
+  <script src="/node_modules/jquery-form/dist/jquery.form.min.js"></script> 
   <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
   <script>
-    // 修改文章
-    // $('#topic-edit').on('click', function (e) {
-      // e.preventDefault()
-      // if (!window.confirm('是否要修改')) return
-      // 获取接口地址
-      // const url = $(this).attr('href')
-      // 发送请求
-      // $.ajax({
-      //   url: url,
-      //   type: 'post',
-      //   datatype: 'json',
-      //   success: function (res) {
-      //     console.log(res)
-      //   }
-      // })
-    // })
+    // 发表评论
+    $('#form-comment').on('submit', function (e) {
+      e.preventDefault()
+      // 获取评论内容
+      $(this).ajaxSubmit(function (res) {
+        switch (res.code) {
+          case 10000:
+            window.alert('发表成功')
+            window.location.reload()
+            break
+        }
+      })
+    })
+
     // 删除文章
     $('#topic-del').on('click', function (e) {
       e.preventDefault()

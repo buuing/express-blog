@@ -17,7 +17,7 @@ exports.isLogin = (req, res, next) => {
   next()
 }
 
-// 校验用户修改删除权限
+// 校验用户是否有修改删除权限
 exports.checkAuth = (req, res, next) => {
   // 使用解构赋值拿到文章id
   const {topicId} = req.params

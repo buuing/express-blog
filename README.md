@@ -2,8 +2,6 @@
 > git clone https://github.com/buuing/express-blog.git
 
 ---
-target: aaa
----
 
 <br>
 
