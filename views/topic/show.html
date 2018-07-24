@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
@@ -11,7 +10,6 @@
   }
 </style>
 </head>
-
 <body>
   {{include '../_includes/header.html'}}
   <section class="container">
@@ -29,19 +27,8 @@
         <h1 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>{{ topic.title }}</h1>
         <div>{{@ topic.content }}</div>
       </article>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <span>1111</span> commented 
-          <span>24 minutes ago</span>
-          <span class="action">
-            <a href=""><i class="glyphicon glyphicon-thumbs-up pull-right"></i></a>
-            <a href=""><i class="glyphicon glyphicon-remove-circle pull-right"></i></a>
-            <a href=""><i class="glyphicon glyphicon-remove-circle pull-right"></i></a>
-          </span>
-        </div>
-        <div class="panel-body">
-          评论测试
-        </div>
+      <div id="comments">
+        
       </div>
       <hr>
       {{ if user }}
@@ -69,7 +56,28 @@
   <script src="/node_modules/jquery/dist/jquery.js"></script>
   <script src="/node_modules/jquery-form/dist/jquery.form.min.js"></script> 
   <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="/node_modules/art-template/lib/template-web.js"></script>
+  <script type="text/template" id="htm">
+    <% comments.forEach(function (item, index) { %>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <span>1111</span> commented 
+          <span>24 minutes ago</span>
+          <span class="action">
+            <a href=""><i class="glyphicon glyphicon-thumbs-up pull-right"></i></a>
+            <a href=""><i class="glyphicon glyphicon-remove-circle pull-right"></i></a>
+            <a href=""><i class="glyphicon glyphicon-remove-circle pull-right"></i></a>
+          </span>
+        </div>
+        <div class="panel-body">
+          <%= item.content %>
+        </div>
+      </div>
+    <% }) %>
+  </script>
   <script>
+    getComments()
+
     // 发表评论
     $('#form-comment').on('submit', function (e) {
       e.preventDefault()
@@ -79,7 +87,9 @@
           switch (res.code) {
             case 10000:
               window.alert('发表成功')
-              window.location.reload()
+              $('#content').val('')
+              getComments()
+              // window.location.reload()
               break
           }
         },
@@ -124,6 +134,24 @@
         }
       })
     })
+
+    // 获取当前文章全部评论
+    function getComments() {
+      // 获取接口
+      const url = $('#form-comment').attr('action')
+      // 获取评论
+      $.ajax({
+        url: url,
+        type: 'get',
+        success: function (res) {
+          const str = template('htm', {
+            comments: res.comments
+          })
+          // console.log(htm)
+          $('#comments').html(str)
+        }
+      })
+    }
   </script>
 </body>
 </html>

@@ -22,12 +22,12 @@ module.exports = class Comment {
 
   // 静态方法, 根据文章id查询所有评论
   static findByTopicId (topicId, callback) {
-    const sql = 'SELECT * FROM `topic_comments` WHERE `id` = ?`'
+    const sql = 'SELECT * FROM `topic_comments` WHERE `topicId` = ?'
     query(sql, [topicId], (err, results) => {
       if (err) {
         return callback(err, undefined)
       }
-      return callback(null, results[0])
+      return callback(null, results)
     })
   }
 

@@ -33,6 +33,8 @@ app.use('/public', express.static('./public/'))
 // 配置 body-parser
 app.use(bodyParser.urlencoded({ extended: true }))
 
+// 删除原生语法规则
+require('art-template').defaults.rules.shift()
 // 配置模板引擎
 app.engine('html', require('express-art-template'))
 

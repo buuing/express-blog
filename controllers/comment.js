@@ -4,7 +4,18 @@ const Comment = require('../models/comment')
 
 // 获取当前文章中所有评论
 exports.getComment = (req, res, next) => {
-  res.send('getComment')
+  // 获取文章id
+  const {topicId} = req.params
+  // 调用静态方法
+  Comment.findByTopicId(topicId, (err, comments) => {
+    if (err) {
+      return next(err)
+    }
+    return res.status(200).json({
+      code: 10000,
+      comments
+    })
+  })
 }
 
 // 发表评论

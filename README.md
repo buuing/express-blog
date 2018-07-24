@@ -29,9 +29,13 @@ const app = express()
 > `npm i art-template express-art-template`
 
 ```
+// 如果需要渲染ajax请求来的数据, 则需要删除<%= %>语法规则
+require('art-template').defaults.rules.shift()
 // 配置模板引擎
 app.engine('html', require('express-art-template'))
 ```
+
+然后在前端引入web
 
 ---
 
