@@ -35,7 +35,8 @@
     "moment": "^2.22.2",
     "morgan": "^1.9.0",
     "mysql": "^2.15.0",
-    "response-time": "^2.3.2"
+    "response-time": "^2.3.2",
+    "twbs-pagination": "^1.4.1"
   },
   "devDependencies": {
     "eslint": "^5.1.0",

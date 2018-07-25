@@ -30,6 +30,7 @@
       <div id="comments">
         
       </div>
+      <ul id="pagination-ul"></ul>
       <hr>
       {{ if user }}
       <form id="form-comment" action="/topic/{{topic.id}}/comment" method="post">
@@ -57,6 +58,7 @@
   <script src="/node_modules/jquery-form/dist/jquery.form.min.js"></script> 
   <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
   <script src="/node_modules/art-template/lib/template-web.js"></script>
+  <script src="/node_modules/twbs-pagination/jquery.twbsPagination.min.js"></script>
   <script type="text/template" id="htm">
     <% comments.forEach(function (item, index) { %>
       <div class="panel panel-default">
@@ -76,7 +78,7 @@
     <% }) %>
   </script>
   <script>
-    getComments()
+    getComments(1)
 
     // 发表评论
     $('#form-comment').on('submit', function (e) {
@@ -88,7 +90,7 @@
             case 10000:
               window.alert('发表成功')
               $('#content').val('')
-              getComments()
+              // getComments()
               // window.location.reload()
               break
           }
@@ -136,9 +138,10 @@
     })
 
     // 获取当前文章全部评论
-    function getComments() {
+    function getComments(page) {
       // 获取接口
-      const url = $('#form-comment').attr('action')
+      let url = $('#form-comment').attr('action')
+      url += '?page=' + page
       // 获取评论
       $.ajax({
         url: url,
@@ -147,7 +150,13 @@
           const str = template('htm', {
             comments: res.comments
           })
-          // console.log(htm)
+          $('#pagination-ul').twbsPagination({
+            totalPages: Math.ceil(res.count[0].count / 5),
+            visiblePages: 5,
+            onPageClick: function (event, page) {
+              getComments(page)
+            }
+          })
           $('#comments').html(str)
         }
       })

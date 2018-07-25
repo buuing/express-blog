@@ -4,16 +4,26 @@ const Comment = require('../models/comment')
 
 // 获取当前文章中所有评论
 exports.getComment = (req, res, next) => {
+  // 获取查询字符串数据
+  const {page = 1, limit = 5} = req.query
+  // console.log(page, limit)
   // 获取文章id
   const {topicId} = req.params
   // 调用静态方法
-  Comment.findByTopicId(topicId, (err, comments) => {
+  Comment.findByTopicId({topicId, page, limit}, (err, comments) => {
     if (err) {
       return next(err)
     }
-    return res.status(200).json({
-      code: 10000,
-      comments
+    Comment.countById(topicId, (err, count) => {
+      if (err) {
+        return next(err)
+      }
+      console.log(count)
+      return res.status(200).json({
+        code: 10000,
+        comments,
+        count
+      })
     })
   })
 }

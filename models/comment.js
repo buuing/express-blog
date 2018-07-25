@@ -21,9 +21,11 @@ module.exports = class Comment {
   }
 
   // 静态方法, 根据文章id查询所有评论
-  static findByTopicId (topicId, callback) {
-    const sql = 'SELECT * FROM `topic_comments` WHERE `topicId` = ?'
-    query(sql, [topicId], (err, results) => {
+  static findByTopicId (options, callback) {
+    const {page, limit, topicId} = options
+    const start = (page - 1) * limit
+    const sql = 'SELECT * FROM `topic_comments` WHERE `topicId` = ? limit ?,?'
+    query(sql, [topicId, start, limit], (err, results) => {
       if (err) {
         return callback(err, undefined)
       }
@@ -40,6 +42,17 @@ module.exports = class Comment {
   // 静态方法, 根据id进行删除
   static delById (commentId, callback) {
     const sql = 'DELETE FROM `topic_comments` WHERE `id` = ?'
-    query(sql, [commentId], callback)
+    query(sql, [commentId], (err, results) => {
+      if (err) {
+        callback(err, undefined)
+      }
+      callback(null, results[0].count)
+    })
+  }
+
+  // 统计当前文章下多少评论
+  static countById (topicId, callback) {
+    const sql = 'SELECT COUNT(*) AS `count` FROM `topic_comments` WHERE `topicId` = ?'
+    query(sql, [topicId], callback)
   }
 }
