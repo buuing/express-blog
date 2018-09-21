@@ -1,6 +1,12 @@
 
 > git clone https://github.com/buuing/express-blog.git
 
+`npm install`
+
+`npm run dev`
+
+`127.0.0.1:8080`
+
 ---
 
 <br>
@@ -352,17 +358,5 @@ CREATE TABLE `topic_comments` (
 
 - 解决方案：
 
-> 将挂载路由的代码`app.use(router)`放到所有的配置代码后面 -- 耗时4小时
-
----
-
-<!-- #### Bug No.2
-
-- 问题描述：
-
-> ...
-
-- 解决方案：
-
-> ... -->
+> 将挂载路由的代码`app.use(router)`放到所有的配置代码后面
 
